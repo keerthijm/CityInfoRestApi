@@ -10,6 +10,7 @@ using CityInfoRestApi.Controllers;
 using CityInfoRestApi.Models;
 using Moq;
 using CityInfoRestApi.Repositories;
+using System.Net;
 
 namespace CityInfoRestApi.Tests.Controllers
 {
@@ -18,84 +19,106 @@ namespace CityInfoRestApi.Tests.Controllers
 	public class CityInfoControllerTest
 	{
 
+		//[TestMethod]
+		//public void GetReturnsNotFound()
+		//{
+		//	// Arrange
+		//	var mockRepository = new Mock<ICityInfoRepository>();
+		//	var controller = new CityInfoController(mockRepository.Object);
+
+		//	// Act
+		//	var actionResult = controller.GetCities();
+
+		//	// Assert
+		//	Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
+
+		//}
+
+
 		[TestMethod]
-		public void GetReturnsNotFound()
+		public void Get_NotNullReturns()
 		{
-			// Arrange
+			var mockRepository = new Mock<ICityInfoRepository>();
+			var controller = new CityInfoController(mockRepository.Object);			
+			var actionResult = controller.Get("abc");
+			Assert.IsNotNull(actionResult);
+		}
+
+
+		[TestMethod]
+		public void Delete_Test()
+		{
 			var mockRepository = new Mock<ICityInfoRepository>();
 			var controller = new CityInfoController(mockRepository.Object);
-
-			// Act
-			var actionResult = controller.GetCities();
-
-			// Assert
-			//Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
-
+			var actionResult = controller.Delete(Guid.NewGuid());
+			Assert.IsNotNull(actionResult);
+		
 		}
-			//	[TestMethod]
-			//	public void Get()
-			//	{
-			//		// Arrange
-			//		CityInfoController controller = new CityInfoController();
 
-			//		// Act
-			//		IEnumerable<string> result = controller.Get();
+		//	[TestMethod]
+		//	public void Get()
+		//	{
+		//		// Arrange
+		//		CityInfoController controller = new CityInfoController();
 
-			//		// Assert
-			//		Assert.IsNotNull(result);
-			//		Assert.AreEqual(2, result.Count());
-			//		Assert.AreEqual("value1", result.ElementAt(0));
-			//		Assert.AreEqual("value2", result.ElementAt(1));
-			//	}
+		//		// Act
+		//		IEnumerable<string> result = controller.Get();
 
-			//	[TestMethod]
-			//	public void GetById()
-			//	{
-			//		// Arrange
-			//		CityInfoController controller = new CityInfoController();
+		//		// Assert
+		//		Assert.IsNotNull(result);
+		//		Assert.AreEqual(2, result.Count());
+		//		Assert.AreEqual("value1", result.ElementAt(0));
+		//		Assert.AreEqual("value2", result.ElementAt(1));
+		//	}
 
-			//		// Act
-			//		string result = controller.Get(5);
+		//	[TestMethod]
+		//	public void GetById()
+		//	{
+		//		// Arrange
+		//		CityInfoController controller = new CityInfoController();
 
-			//		// Assert
-			//		Assert.AreEqual("value", result);
-			//	}
+		//		// Act
+		//		string result = controller.Get(5);
 
-			//	[TestMethod]
-			//	public void Post()
-			//	{
-			//		// Arrange
-			//		CityInfoController controller = new CityInfoController();
+		//		// Assert
+		//		Assert.AreEqual("value", result);
+		//	}
 
-			//		// Act
-			//		controller.Post("value");
+		//	[TestMethod]
+		//	public void Post()
+		//	{
+		//		// Arrange
+		//		CityInfoController controller = new CityInfoController();
 
-			//		// Assert
-			//	}
+		//		// Act
+		//		controller.Post("value");
 
-			//	[TestMethod]
-			//	public void Put()
-			//	{
-			//		// Arrange
-			//		CityInfoController controller = new CityInfoController();
+		//		// Assert
+		//	}
 
-			//		// Act
-			//		controller.Put(5, "value");
+		//	[TestMethod]
+		//	public void Put()
+		//	{
+		//		// Arrange
+		//		CityInfoController controller = new CityInfoController();
 
-			//		// Assert
-			//	}
+		//		// Act
+		//		controller.Put(5, "value");
 
-			//	[TestMethod]
-			//	public void Delete()
-			//	{
-			//		// Arrange
-			//		CityInfoController controller = new CityInfoController();
+		//		// Assert
+		//	}
 
-			//		// Act
-			//		controller.Delete(5);
+		//	[TestMethod]
+		//	public void Delete()
+		//	{
+		//		// Arrange
+		//		CityInfoController controller = new CityInfoController();
 
-			//		// Assert
-			//	}
-		}
+		//		// Act
+		//		controller.Delete(5);
+
+		//		// Assert
+		//	}
+	}
 	}
 

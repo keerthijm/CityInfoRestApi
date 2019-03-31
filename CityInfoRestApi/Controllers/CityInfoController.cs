@@ -19,7 +19,6 @@ namespace CityInfoRestApi.Controllers
 		string apiKey = "e0e0db2d215e486f923f5af3c9950ba9";
 
 		
-		
 		private readonly ICityInfoRepository iCityInfo;
 		public CityInfoController(ICityInfoRepository _iCityInfo)
 		{
@@ -27,7 +26,7 @@ namespace CityInfoRestApi.Controllers
 		}
 		
 		[HttpPost]
-		public async Task<HttpResponseMessage> Post(CityInfoBaseModel cityInfoBaseModel)
+		public async Task<IHttpActionResult> Post(CityInfoBaseModel cityInfoBaseModel)
 		{
 			CityInfoModel cityInfoModel = new CityInfoModel();
 			cityInfoModel.Id = Guid.NewGuid();
@@ -43,24 +42,27 @@ namespace CityInfoRestApi.Controllers
 
 			if (result != null)
 			{
-				return Request.CreateResponse(HttpStatusCode.OK, result, "City Saved Successfully.");
+				return Ok(result);
 			}
 			else
 			{
-				return Request.CreateResponse(HttpStatusCode.BadRequest, result, "City Not Saved, Please try again.");
+				return NotFound();
 			}
 		}
 
 
 		[HttpGet]
-		public async Task<HttpResponseMessage> GetCities()
+		public async Task<IHttpActionResult> GetCities()
 		{
 			var cities = iCityInfo.GetCities();
-			return Request.CreateResponse(HttpStatusCode.OK, cities);
+			if (cities == null)
+				return NotFound();
+
+			return Ok(cities);
 		}
 
 		[HttpGet]
-		public async Task<HttpResponseMessage> Get(string Name)
+		public async Task<IHttpActionResult> Get(string Name)
 		{
 			Name = Name.Replace('"', ' ').Trim();
 			Name = Name.Replace("\"", string.Empty).Trim();
@@ -95,30 +97,28 @@ namespace CityInfoRestApi.Controllers
 			}
 
 
-			return Request.CreateResponse(HttpStatusCode.OK, cityWithExtraInfos);
+			if (cityWithExtraInfos.Count == 0)
+				return NotFound();
+
+			return Ok(cityWithExtraInfos);
 		}
 
 		[HttpDelete]
 		// DELETE api/CityInfo/Id
-		public async Task<HttpResponseMessage> Delete(Guid id)
+		public async Task<IHttpActionResult> Delete(Guid id)
 		{
-			iCityInfo.DeleteCity(id);
 			var city = iCityInfo.GetCity(id);
-
 			if (city == null)
-			{
-				return Request.CreateResponse(HttpStatusCode.OK, "City Deleted Successfully.");
-			}
-			else
-			{
-				return Request.CreateResponse(HttpStatusCode.BadRequest, "City Not Deleted, Please try again.");
-			}
+				return NotFound();
 
+			iCityInfo.DeleteCity(id);
+			return Ok();
+			
 		}
 
 		// PUT api/CityInfo/Id
 		[HttpPut]
-		public async Task<HttpResponseMessage> Put(CityInfoUpdateModel cityInfoUpdateModel)
+		public async Task<IHttpActionResult> Put(CityInfoUpdateModel cityInfoUpdateModel)
 		{
 			CityInfoModel cityInfoModel = new CityInfoModel();
 			cityInfoModel.Id = cityInfoUpdateModel.Id;		
@@ -129,17 +129,11 @@ namespace CityInfoRestApi.Controllers
 
 			var city = iCityInfo.GetCity(cityInfoUpdateModel.Id);
 
-			if (city != null)
-			{
-				return Request.CreateResponse(HttpStatusCode.OK, city, "City Updated Successfully.");
-			}
-			else
-			{
-				return Request.CreateResponse(HttpStatusCode.BadRequest, city, "City Not Updated, Please try again.");
-			}
+			if (city == null)
+				return NotFound();
+
+			return Ok(city);			
 		}
-
-
 	
 	}
 }

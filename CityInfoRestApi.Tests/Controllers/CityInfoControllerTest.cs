@@ -7,75 +7,95 @@ using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CityInfoRestApi;
 using CityInfoRestApi.Controllers;
+using CityInfoRestApi.Models;
+using Moq;
+using CityInfoRestApi.Repositories;
 
 namespace CityInfoRestApi.Tests.Controllers
 {
+
 	[TestClass]
 	public class CityInfoControllerTest
 	{
-		//	[TestMethod]
-		//	public void Get()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
 
-		//		// Act
-		//		IEnumerable<string> result = controller.Get();
+		[TestMethod]
+		public void GetReturnsNotFound()
+		{
+			// Arrange
+			var mockRepository = new Mock<ICityInfoRepository>();
+			var controller = new CityInfoController(mockRepository.Object);
 
-		//		// Assert
-		//		Assert.IsNotNull(result);
-		//		Assert.AreEqual(2, result.Count());
-		//		Assert.AreEqual("value1", result.ElementAt(0));
-		//		Assert.AreEqual("value2", result.ElementAt(1));
-		//	}
+			// Act
+			var actionResult = controller.GetCities();
 
-		//	[TestMethod]
-		//	public void GetById()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
+			// Assert
+			//Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
 
-		//		// Act
-		//		string result = controller.Get(5);
+		}
+			//	[TestMethod]
+			//	public void Get()
+			//	{
+			//		// Arrange
+			//		CityInfoController controller = new CityInfoController();
 
-		//		// Assert
-		//		Assert.AreEqual("value", result);
-		//	}
+			//		// Act
+			//		IEnumerable<string> result = controller.Get();
 
-		//	[TestMethod]
-		//	public void Post()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
+			//		// Assert
+			//		Assert.IsNotNull(result);
+			//		Assert.AreEqual(2, result.Count());
+			//		Assert.AreEqual("value1", result.ElementAt(0));
+			//		Assert.AreEqual("value2", result.ElementAt(1));
+			//	}
 
-		//		// Act
-		//		controller.Post("value");
+			//	[TestMethod]
+			//	public void GetById()
+			//	{
+			//		// Arrange
+			//		CityInfoController controller = new CityInfoController();
 
-		//		// Assert
-		//	}
+			//		// Act
+			//		string result = controller.Get(5);
 
-		//	[TestMethod]
-		//	public void Put()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
+			//		// Assert
+			//		Assert.AreEqual("value", result);
+			//	}
 
-		//		// Act
-		//		controller.Put(5, "value");
+			//	[TestMethod]
+			//	public void Post()
+			//	{
+			//		// Arrange
+			//		CityInfoController controller = new CityInfoController();
 
-		//		// Assert
-		//	}
+			//		// Act
+			//		controller.Post("value");
 
-		//	[TestMethod]
-		//	public void Delete()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
+			//		// Assert
+			//	}
 
-		//		// Act
-		//		controller.Delete(5);
+			//	[TestMethod]
+			//	public void Put()
+			//	{
+			//		// Arrange
+			//		CityInfoController controller = new CityInfoController();
 
-		//		// Assert
-		//	}
+			//		// Act
+			//		controller.Put(5, "value");
+
+			//		// Assert
+			//	}
+
+			//	[TestMethod]
+			//	public void Delete()
+			//	{
+			//		// Arrange
+			//		CityInfoController controller = new CityInfoController();
+
+			//		// Act
+			//		controller.Delete(5);
+
+			//		// Assert
+			//	}
+		}
 	}
-}
+

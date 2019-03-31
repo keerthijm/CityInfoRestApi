@@ -208,6 +208,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CityInfoModel.cs" />
+    <Compile Include="Models\HealperClass.cs" />
+    <Compile Include="Models\HttpClientHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CityInfoRepository.cs" />
     <Compile Include="Repositories\ICityInfoRepository.cs" />

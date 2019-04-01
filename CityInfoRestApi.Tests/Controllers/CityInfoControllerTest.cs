@@ -41,8 +41,26 @@ namespace CityInfoRestApi.Tests.Controllers
 			Assert.IsNotNull(response);
 			var cities = response.Content;
 			Assert.AreEqual(2, cities.Count());
+		}
 
-			// Assert
+
+		[TestMethod]
+		public void AddCityTestMethod()
+		{
+			// Arrange
+			var newGuid = Guid.NewGuid();
+			var mockcity = new CityInfoModel {Id = newGuid, Name = "mock city 1"};
+			iCityInfoRepository.Setup(repo => repo.AddCity(mockcity));
+
+			var cityInfoBaseModel = new CityInfoBaseModel
+			{
+				Name = "test1",
+				Country = "United Kingdom",
+				TouristRating = 2,
+				EstimatedPopulation = 1234
+			};
+			var actionResult = controller.Post(cityInfoBaseModel);
+			Assert.IsNotNull(actionResult);
 		}
 
 
@@ -50,8 +68,11 @@ namespace CityInfoRestApi.Tests.Controllers
 		public void WhenPuttingACityItShouldBeUpdated()
 		{
 			// Arrange
-			var id = Guid.Parse("648038fb-260d-4a84-89e1-0057b151a4bd");
-			var cityInfoUpdateModel = new CityInfoUpdateModel {Id = id, TouristRating = 2, EstimatedPopulation = 1234};
+			var newGuid = Guid.NewGuid();
+			var mockcity = new CityInfoModel {Id = newGuid, Name = "mock city 1"};
+			iCityInfoRepository.Setup(repo => repo.AddCity(mockcity));
+
+			var cityInfoUpdateModel = new CityInfoUpdateModel {Id = newGuid, TouristRating = 2, EstimatedPopulation = 1234};
 			var actionResult = controller.Put(cityInfoUpdateModel).Result;
 			// Act
 
@@ -60,7 +81,6 @@ namespace CityInfoRestApi.Tests.Controllers
 			Assert.IsNotNull(response);
 			var city = response.Content;
 
-			Assert.AreEqual(id, city.Id);
 			Assert.AreEqual(2, city.TouristRating);
 		}
 
@@ -83,70 +103,5 @@ namespace CityInfoRestApi.Tests.Controllers
 			var actionResult = controller.Delete(Guid.NewGuid());
 			Assert.IsNotNull(actionResult);
 		}
-		//		IEnumerable<string> result = controller.Get();
-
-		//		// Act
-		//		CityInfoController controller = new CityInfoController();
-		//		// Arrange
-		//	{
-		//	public void Get()
-
-		//	[TestMethod]
-
-		//		// Assert
-		//		Assert.IsNotNull(result);
-		//		Assert.AreEqual(2, result.Count());
-		//		Assert.AreEqual("value1", result.ElementAt(0));
-		//		Assert.AreEqual("value2", result.ElementAt(1));
-		//	}
-
-		//	[TestMethod]
-		//	public void GetById()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
-
-		//		// Act
-		//		string result = controller.Get(5);
-
-		//		// Assert
-		//		Assert.AreEqual("value", result);
-		//	}
-
-		//	[TestMethod]
-		//	public void Post()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
-
-		//		// Act
-		//		controller.Post("value");
-
-		//		// Assert
-		//	}
-
-		//	[TestMethod]
-		//	public void Put()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
-
-		//		// Act
-		//		controller.Put(5, "value");
-
-		//		// Assert
-		//	}
-
-		//	[TestMethod]
-		//	public void Delete()
-		//	{
-		//		// Arrange
-		//		CityInfoController controller = new CityInfoController();
-
-		//		// Act
-		//		controller.Delete(5);
-
-		//		// Assert
-		//	}
 	}
 }

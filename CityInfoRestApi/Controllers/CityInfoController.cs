@@ -25,14 +25,16 @@ namespace CityInfoRestApi.Controllers
 		[HttpPost]
 		public async Task<IHttpActionResult> Post(CityInfoBaseModel cityInfoBaseModel)
 		{
-			var cityInfoModel = new CityInfoModel();
-			cityInfoModel.Id = Guid.NewGuid();
-			cityInfoModel.Name = cityInfoBaseModel.Name;
-			cityInfoModel.State = cityInfoBaseModel.State;
-			cityInfoModel.Country = cityInfoBaseModel.Country;
-			cityInfoModel.TouristRating = cityInfoBaseModel.TouristRating;
-			cityInfoModel.DateEstablished = cityInfoBaseModel.DateEstablished;
-			cityInfoModel.EstimatedPopulation = cityInfoBaseModel.EstimatedPopulation;
+			var cityInfoModel = new CityInfoModel
+			{
+				Id = Guid.NewGuid(),
+				Name = cityInfoBaseModel.Name,
+				State = cityInfoBaseModel.State,
+				Country = cityInfoBaseModel.Country,
+				TouristRating = cityInfoBaseModel.TouristRating,
+				DateEstablished = cityInfoBaseModel.DateEstablished,
+				EstimatedPopulation = cityInfoBaseModel.EstimatedPopulation
+			};
 			iCityInfo.AddCity(cityInfoModel);
 
 			var result = iCityInfo.GetCity(cityInfoModel.Id);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Results;
 using CityInfoRestApi.Controllers;
 using CityInfoRestApi.Models;
@@ -14,18 +15,18 @@ namespace CityInfoRestApi.Tests.Controllers
 	[TestClass]
 	public class CityInfoControllerTest
 	{
-		private readonly CityInfoController controller;
+		private readonly CityInfoController cityInfoController;
 		private readonly Mock<ICityInfoRepository> iCityInfoRepository;
 
 		public CityInfoControllerTest()
 		{
 			iCityInfoRepository = new Mock<ICityInfoRepository>();
-			controller = new CityInfoController(iCityInfoRepository.Object);
+			cityInfoController = new CityInfoController(iCityInfoRepository.Object);
 		}
 
 
 		[TestMethod]
-		public async Task IndexTest_ReturnsViewWithCitiesList()
+		public void IndexTest_ReturnsViewWithCitiesList()
 		{
 			// Arrange
 			var mockcityList = new List<CityInfoModel>
@@ -36,7 +37,7 @@ namespace CityInfoRestApi.Tests.Controllers
 			iCityInfoRepository.Setup(repo => repo.GetCities()).Returns(mockcityList);
 
 			// Act
-			var result = controller.GetCities().Result;
+			var result = cityInfoController.GetCities().Result;
 			var response = result as OkNegotiatedContentResult<IEnumerable<CityInfoModel>>;
 			Assert.IsNotNull(response);
 			var cities = response.Content;
@@ -59,7 +60,7 @@ namespace CityInfoRestApi.Tests.Controllers
 				TouristRating = 2,
 				EstimatedPopulation = 1234
 			};
-			var actionResult = controller.Post(cityInfoBaseModel);
+			var actionResult = cityInfoController.Post(cityInfoBaseModel);
 			Assert.IsNotNull(actionResult);
 		}
 
@@ -73,7 +74,7 @@ namespace CityInfoRestApi.Tests.Controllers
 			iCityInfoRepository.Setup(repo => repo.AddCity(mockcity));
 
 			var cityInfoUpdateModel = new CityInfoUpdateModel {Id = newGuid, TouristRating = 2, EstimatedPopulation = 1234};
-			var actionResult = controller.Put(cityInfoUpdateModel).Result;
+			var actionResult = cityInfoController.Put(cityInfoUpdateModel).Result;
 			// Act
 
 			var response = actionResult as OkNegotiatedContentResult<CityInfoModel>;
@@ -99,8 +100,11 @@ namespace CityInfoRestApi.Tests.Controllers
 		public void Delete_Test()
 		{
 			var mockRepository = new Mock<ICityInfoRepository>();
-			var controller = new CityInfoController(mockRepository.Object);
-			var actionResult = controller.Delete(Guid.NewGuid());
+			Task<IHttpActionResult> actionResult;
+			using (var cityInfoController = new CityInfoController(mockRepository.Object))
+			{
+				actionResult = cityInfoController.Delete(Guid.NewGuid());
+			}
 			Assert.IsNotNull(actionResult);
 		}
 	}

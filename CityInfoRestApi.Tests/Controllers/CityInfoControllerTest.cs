@@ -11,6 +11,8 @@ using CityInfoRestApi.Models;
 using Moq;
 using CityInfoRestApi.Repositories;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web.Http.Results;
 
 namespace CityInfoRestApi.Tests.Controllers
 {
@@ -18,21 +20,64 @@ namespace CityInfoRestApi.Tests.Controllers
 	[TestClass]
 	public class CityInfoControllerTest
 	{
+		private Mock<ICityInfoRepository> iCityInfoRepository;
+		private CityInfoController controller;
 
-		//[TestMethod]
-		//public void GetReturnsNotFound()
-		//{
-		//	// Arrange
-		//	var mockRepository = new Mock<ICityInfoRepository>();
-		//	var controller = new CityInfoController(mockRepository.Object);
+		public CityInfoControllerTest()
+		{
+			iCityInfoRepository = new Mock<ICityInfoRepository>();			
+			controller = new CityInfoController(iCityInfoRepository.Object);
+		}
 
-		//	// Act
-		//	var actionResult = controller.GetCities();
+	
+		[TestMethod]
+		public async Task IndexTest_ReturnsViewWithCitiesList()
+		{
+			// Arrange
+			var mockcityList = new List<CityInfoModel>
+			{
+		new CityInfoModel { Name = "mock city 1" },
+		new CityInfoModel { Name = "mock city 2" }
+			};
+			iCityInfoRepository.Setup(repo => repo.GetCities()).Returns((mockcityList));
 
-		//	// Assert
-		//	Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
+			// Act
+			
+			var result = controller.GetCities().Result;
 
-		//}
+			var response = result as OkNegotiatedContentResult<IEnumerable<CityInfoModel>>;
+
+			Assert.IsNotNull(response);
+			var cities = response.Content;
+			Assert.AreEqual(2, cities.Count());
+
+			// Assert
+
+
+		}
+
+
+		[TestMethod]
+		public void WhenPuttingACityItShouldBeUpdated()
+		{
+			// Arrange
+			var id = Guid.NewGuid();
+			var cityInfoUpdateModel = new CityInfoUpdateModel { Id = id, TouristRating = 2, EstimatedPopulation = 1234 };
+			var actionResult = controller.Put(cityInfoUpdateModel).Result;
+			// Act
+
+			var response = actionResult as OkNegotiatedContentResult<CityInfoModel>;
+
+			Assert.IsNotNull(response);
+			var city = response.Content;
+
+			Assert.AreEqual(id, city.Id);
+			Assert.AreEqual(2, city.TouristRating);
+
+
+
+		}
+
 
 
 		[TestMethod]

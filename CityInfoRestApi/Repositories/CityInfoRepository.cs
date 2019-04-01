@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using CityInfoRestApi.EntityFramework;
 using CityInfoRestApi.Models;
 using Microsoft.Practices.Unity;
@@ -12,10 +11,11 @@ namespace CityInfoRestApi.Repositories
 	public class CityInfoRepository : ICityInfoRepository
 	{
 		[Dependency]
-		public CityInfoDatabaseEntities databaseEntities { get; set; }		
+		public CityInfoDatabaseEntities databaseEntities { get; set; }
+
 		public void AddCity(CityInfoModel cityInfoModel)
 		{
-			City cityInfo = new City
+			var cityInfo = new City
 			{
 				Id = cityInfoModel.Id,
 				Name = cityInfoModel.Name,
@@ -39,13 +39,13 @@ namespace CityInfoRestApi.Repositories
 
 		public IEnumerable<CityInfoModel> GetCities()
 		{
-			List<CityInfoModel> cities = new List<CityInfoModel>();
+			var cities = new List<CityInfoModel>();
 			var cityInfoDetails = databaseEntities.Cities;
 			if (cityInfoDetails != null)
 			{
 				Parallel.ForEach(cityInfoDetails, x =>
 				{
-					CityInfoModel cityInfoModel = new CityInfoModel();
+					var cityInfoModel = new CityInfoModel();
 					cityInfoModel.Id = x.Id;
 					cityInfoModel.Name = x.Name;
 					cityInfoModel.State = x.State;
@@ -54,14 +54,10 @@ namespace CityInfoRestApi.Repositories
 					cityInfoModel.DateEstablished = x.DateEstablished;
 					cityInfoModel.EstimatedPopulation = x.EstimatedPopulation;
 					cities.Add(cityInfoModel);
-
 				});
 				return cities;
 			}
-			else
-			{
-				return cities;
-			}
+			return cities;
 		}
 
 		public CityInfoModel GetCity(Guid Id)
@@ -82,10 +78,7 @@ namespace CityInfoRestApi.Repositories
 				};
 				return cityInfoModel;
 			}
-			else
-			{
-				return cityInfoModel;
-			}
+			return cityInfoModel;
 		}
 
 		public void UpdateCity(CityInfoModel cityInfoModel)

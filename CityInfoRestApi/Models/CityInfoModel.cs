@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace CityInfoRestApi.Models
 {
 	public class CityInfoBaseModel : CityInfoOtherModel
-	{		
+	{
 		public string Name { get; set; }
 		public string State { get; set; }
-		public string Country { get; set; }	
+		public string Country { get; set; }
 	}
 
 
 	public class CityInfoOtherModel
-	{	
+	{
 		public byte? TouristRating { get; set; }
 		public DateTime? DateEstablished { get; set; }
 		public long? EstimatedPopulation { get; set; }
@@ -25,11 +22,11 @@ namespace CityInfoRestApi.Models
 		public Guid Id { get; set; }
 	}
 
-	public class CityInfoModel: CityInfoBaseModel
+	public class CityInfoModel : CityInfoBaseModel
 	{
-		public Guid Id { get; set; }	
+		public Guid Id { get; set; }
 	}
-	
+
 	public class CityWithExtraInfoModel : CityInfoModel
 	{
 		//2 digit country code, 
@@ -43,7 +40,5 @@ namespace CityInfoRestApi.Models
 		public string CurrencyCode { get; set; }
 
 		public string WeatherInfo { get; set; }
-
-
 	}
 }

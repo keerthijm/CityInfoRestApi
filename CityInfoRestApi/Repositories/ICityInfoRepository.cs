@@ -1,10 +1,6 @@
-﻿using CityInfoRestApi.EntityFramework;
-using CityInfoRestApi.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CityInfoRestApi.Models;
 
 namespace CityInfoRestApi.Repositories
 {
